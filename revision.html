@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AZ-400 · Cartes de révision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="description" content="185 cartes de révision gratuites pour la certification Microsoft AZ-400 (DevOps Engineer Expert) : pièges d'examen, rappel actif, progression sauvegardée, utilisable hors ligne.">
+<meta name="theme-color" content="#0e1016">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AZ-400 · Cartes de révision">
+<meta property="og:description" content="185 cartes pour réviser l'AZ-400 : pièges d'examen, 9 paquets, astuces réflexes. Gratuit, open source, hors ligne.">
+<meta property="og:url" content="https://anisanis-b.github.io/az400-flashcards/revision.html">
+<meta property="og:image" content="https://anisanis-b.github.io/az400-flashcards/assets/screenshot.png">
+<style>
+  :root{
+    --bg:#0e1016;
+    --bg2:#141824;
+    --panel:#191d2a;
+    --line:#272c3d;
+    --line-2:#232838;
+    --ink:#e8eaf2;
+    --muted:#8b91a6;
+    --muted-2:#5f6577;
+    --accent:#a78bfa;
+    --proc:#a78bfa;
+    --src:#2dd4bf;
+    --pip:#60a5fa;
+    --sec:#fbbf24;
+    --ins:#fb7185;
+    --pie:#fb923c;
+    --eqv:#e879f9;
+    --cmd:#a3e635;
+    --tip:#4ade80;
+    --ok:#4ade80;
+    --review:#fbbf24;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(167,139,250,.08), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(96,165,250,.07), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:22px 18px 60px;}
+
+  /* ---------- Header ---------- */
+  header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+  .brand{display:flex;flex-direction:column;gap:2px;}
+  .brand .kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);}
+  .brand h1{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:26px;margin:0;letter-spacing:-.01em;
+    line-height:1.05;
+  }
+  .brand h1 b{color:var(--accent);font-weight:700;transition:color .3s ease;}
+  .stats{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);text-align:right;line-height:1.7;white-space:nowrap;}
+  .stats .k{color:var(--ink);}
+  .stats .ok{color:var(--ok);}
+  .stats .rv{color:var(--review);}
+
+  /* ---------- Progress ---------- */
+  .rail{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin:2px 0 14px;}
+  .rail>span{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .35s cubic-bezier(.4,0,.2,1),background .3s ease;}
+
+  /* ---------- Filters ---------- */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+  .chip{
+    font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;
+    padding:7px 12px;border-radius:99px;cursor:pointer;
+    background:var(--panel);border:1px solid var(--line);color:var(--muted);
+    transition:all .18s ease;user-select:none;
+  }
+  .chip:hover{border-color:var(--muted-2);color:var(--ink);}
+  .chip.active{color:#0e1016;background:var(--accent);border-color:var(--accent);}
+  .chip .dot{display:inline-block;width:7px;height:7px;border-radius:99px;margin-right:6px;vertical-align:middle;}
+  .chip.review-toggle{margin-left:auto;}
+  .chip.review-toggle.active{background:var(--review);border-color:var(--review);}
+
+  /* ---------- Card ---------- */
+  .stage{perspective:1600px;margin:16px 0 10px;}
+  .card{
+    position:relative;width:100%;min-height:320px;cursor:pointer;outline:none;
+    --accent:var(--pip);
+    user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;
+  }
+  .card-inner{
+    position:relative;width:100%;min-height:320px;
+    transform-style:preserve-3d;
+    transition:transform .5s cubic-bezier(.35,.1,.25,1);
+  }
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:linear-gradient(160deg,var(--panel),var(--bg2));
+    padding:26px 24px;display:flex;flex-direction:column;
+    box-shadow:0 20px 50px -30px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.03);
+    overflow:auto;
+  }
+  .face::before{
+    content:"";position:absolute;left:0;top:0;height:100%;width:4px;
+    background:var(--accent);opacity:.9;transition:background .3s ease;
+  }
+  .face.back{transform:rotateY(180deg);}
+  .face.back{background:linear-gradient(160deg,#181f2e,#111623);}
+
+  .meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:auto;}
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;transition:color .3s ease;display:flex;align-items:center;gap:8px;
+  }
+  .eyebrow .num{color:var(--muted-2);}
+  .flag{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 8px;border-radius:99px;border:1px solid var(--line);color:var(--muted);}
+  .flag.known{color:var(--ok);border-color:rgba(74,222,128,.4);}
+  .flag.review{color:var(--review);border-color:rgba(251,191,36,.4);}
+
+  .qlabel{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2);margin:0 0 10px;}
+  .qtext{
+    font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:22px;line-height:1.32;margin:0;
+    letter-spacing:-.01em;
+  }
+  .qtext code{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:.84em;letter-spacing:0;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:6px;color:#cfe0ff;overflow-wrap:anywhere;}
+  .atext{font-size:17px;line-height:1.55;margin:0;color:#eef0f7;}
+  .atext code{font-family:"JetBrains Mono",monospace;font-size:.9em;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:6px;color:#cfe0ff;overflow-wrap:anywhere;}
+  .hint{
+    margin-top:auto;padding-top:16px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted-2);
+    display:flex;align-items:center;gap:8px;
+  }
+  .hint kbd{background:var(--line);border:1px solid var(--line-2);border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--muted);font-family:inherit;font-size:10px;}
+
+  /* ---------- Controls ---------- */
+  .nav{display:flex;align-items:center;gap:10px;margin-top:14px;}
+  .btn{
+    font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;
+    border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+    padding:12px 14px;cursor:pointer;transition:all .16s ease;display:flex;align-items:center;justify-content:center;gap:7px;
+    user-select:none;
+  }
+  .btn:hover{border-color:var(--muted-2);background:#1e2333;}
+  .btn:active{transform:translateY(1px);}
+  .btn.icon{width:48px;flex:0 0 auto;font-size:16px;}
+  .btn.flip{flex:1;background:var(--accent);border-color:var(--accent);color:#0e1016;font-weight:600;transition:background .3s ease,transform .16s ease;}
+  .btn.flip:hover{filter:brightness(1.06);}
+  .actions{display:flex;gap:10px;margin-top:10px;}
+  .btn.rev{flex:1;color:var(--review);border-color:rgba(251,191,36,.3);}
+  .btn.rev:hover{background:rgba(251,191,36,.08);}
+  .btn.know{flex:1;color:var(--ok);border-color:rgba(74,222,128,.3);}
+  .btn.know:hover{background:rgba(74,222,128,.08);}
+  .tools{display:flex;gap:10px;margin-top:10px;}
+  .btn.ghost{flex:1;color:var(--muted);font-size:12px;padding:10px;}
+
+  .empty{
+    text-align:center;padding:60px 20px;color:var(--muted);
+    font-family:"JetBrains Mono",monospace;font-size:13px;line-height:1.8;
+  }
+  .empty b{color:var(--ink);font-weight:600;}
+
+  footer{margin-top:22px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted-2);line-height:1.7;}
+
+  @media (max-width:520px){
+    .wrap{padding:18px 14px 48px;}
+    .brand h1{font-size:22px;}
+    .qtext{font-size:20px;}
+    .stats{font-size:11px;}
+    .hint{display:none;}
+    .face{padding:22px 18px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .card-inner{transition:none;}
+    .rail>span{transition:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="kicker">Microsoft DevOps Engineer</span>
+      <h1>AZ&#8209;400 <b id="brandAccent">· Cartes</b></h1>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="rail"><span id="railFill"></span></div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="stage">
+    <div class="card" id="card" tabindex="0" role="button" aria-label="Carte de révision, cliquer pour retourner">
+      <div class="card-inner">
+        <div class="face front">
+          <div class="meta">
+            <span class="eyebrow" id="feyebrow"></span>
+            <span class="flag" id="fflag"></span>
+          </div>
+          <p class="qlabel">Question</p>
+          <p class="qtext" id="qtext"></p>
+          <div class="hint"><kbd>Espace</kbd> retourner · <kbd>←</kbd> <kbd>→</kbd> naviguer</div>
+        </div>
+        <div class="face back">
+          <div class="meta">
+            <span class="eyebrow" id="beyebrow"></span>
+            <span class="flag" id="bflag"></span>
+          </div>
+          <p class="qlabel">Réponse</p>
+          <p class="atext" id="atext"></p>
+          <div class="hint"><kbd>J</kbd> je sais · <kbd>R</kbd> à revoir · <kbd>S</kbd> mélanger</div>
+        </div>
+      </div>
+    </div>
+    <div class="empty" id="empty" style="display:none"></div>
+  </div>
+
+  <div class="nav" id="nav">
+    <button class="btn icon" id="prev" aria-label="Précédent">◀</button>
+    <button class="btn flip" id="flip">Retourner</button>
+    <button class="btn icon" id="next" aria-label="Suivant">▶</button>
+  </div>
+  <div class="actions" id="actions">
+    <button class="btn rev" id="markRev">À revoir</button>
+    <button class="btn know" id="markKnow">Je sais</button>
+  </div>
+  <div class="tools">
+    <button class="btn ghost" id="shuffle">↺ Mélanger</button>
+    <button class="btn ghost" id="reset">Réinitialiser</button>
+  </div>
+
+  <footer id="foot">
+    185 cartes · pièges d'examen &amp; astuces inclus<br>
+    Progression sauvegardée sur cet appareil.<br>
+    <a href="index.html" style="color:var(--muted-2)">À propos, code source &amp; contributions</a>
+  </footer>
+</div>
+
+<script>
+/* ---------- Données ---------- */
+const DOMAINS = {
+  proc:{label:"Concevoir et implémenter des processus et des communications",             short:"Processus & Communication", color:"var(--proc)"},
+  src: {label:"Concevoir et implémenter une stratégie de contrôle de code source",        short:"Code source",               color:"var(--src)"},
+  pip: {label:"Concevoir et implémenter des pipelines de build et de mise en production", short:"Pipelines",                 color:"var(--pip)"},
+  sec: {label:"Développer un plan de sécurité et de conformité",                          short:"Sécurité & Conformité",     color:"var(--sec)"},
+  ins: {label:"Implémenter une stratégie d'instrumentation",                              short:"Instrumentation",           color:"var(--ins)"},
+  pie: {label:"Pièges d'examen",                                                          short:"Pièges",                    color:"var(--pie)"},
+  eqv: {label:"GitHub ↔ Azure DevOps",                                                    short:"GitHub ↔ Azure DevOps",     color:"var(--eqv)"},
+  cmd: {label:"Syntaxe et commandes",                                                     short:"Syntaxe",                   color:"var(--cmd)"},
+  tip: {label:"Astuces réflexes",                                                         short:"Astuces",                   color:"var(--tip)"},
+};
+
+const CARDS = [
+  // ===== D1 Processus & Communication =====
+  // --- Traçabilité et flux de travail ---
+  {d:"proc", q:"Area Path vs Iteration Path : à quelle question répond chacun ?", a:"Area Path = <b>où / qui</b> (composant, équipe), sans dates : c'est lui qui filtre le backlog d'une team. Iteration Path = <b>quand</b> (sprint, release), avec dates de début et de fin. Un work item porte les deux."},
+  {d:"proc", q:"Quel est le work item clé du backlog dans chacun des 4 process d'Azure Boards ?", a:"Basic : <b>Issue</b>. Agile : <b>User Story</b>. Scrum : <b>Product Backlog Item</b> (PBI). CMMI (Capability Maturity Model Integration) : <b>Requirement</b>."},
+  {d:"proc", q:"Quel process Azure Boards utilise les états New · Approved · Committed · Done ?", a:"<b>Scrum</b>. Agile : New · Active · Resolved · Closed. CMMI (Capability Maturity Model Integration) : Proposed · Active · Resolved · Closed. Basic : To Do · Doing · Done."},
+  {d:"proc", q:"Quelle chaîne de traçabilité de bout en bout relie un work item à la production ?", a:"Work item → commit → build → release → environnement → test. Depuis n'importe quel maillon, on remonte ou on descend la chaîne : on sait ainsi quelle version contient le correctif d'un bug."},
+  {d:"proc", q:"GitHub : une feature s'étale sur 3 dépôts. Milestone ou Project pour la suivre ?", a:"<b>Project</b> : il est multi-dépôts et vit au niveau de l'organisation ou de l'utilisateur. Un Milestone est limité à <b>un seul dépôt</b>."},
+  {d:"proc", q:"Inner loop vs outer loop : quelle différence ?", a:"Inner loop = cycle <b>local</b> du développeur (coder, compiler, tester, déboguer, commiter), en secondes ou minutes. Outer loop = cycle <b>partagé</b> par l'équipe (pull request, revue, scans, pipelines, déploiement), en minutes ou heures, avec une taxe élevée."},
+  // --- Métriques et requêtes ---
+  {d:"proc", q:"Quelles sont les 4 analyses classiques du flux de travail sur les work items ?", a:"Cycle time, distribution du lead time, diagramme de flux cumulé (CFD, Cumulative Flow Diagram) et analyse du vieillissement des work items."},
+  {d:"proc", q:"Burnup ou burndown : lequel révèle un ajout de périmètre en cours de sprint ?", a:"Le <b>burnup</b> : il montre les changements de périmètre (scope ajouté en cours de route). Le burndown les masque."},
+  {d:"proc", q:"GitHub Projects Insights : current charts vs historical charts ?", a:"Current charts = l'<b>état présent</b> (par assigné, par label, par statut). Historical charts = l'<b>évolution dans le temps</b> (vélocité, taux de clôture), avec <b>Burn up</b> comme graphique par défaut."},
+  // --- Collaboration et communication ---
+  {d:"proc", q:"Que change le mot-clé <code>Fixes</code> placé devant <code>AB#142</code> dans un message de commit GitHub ?", a:"Sans mot-clé, <code>AB#142</code> crée un simple lien vers le work item. Avec <code>Fixes AB#142</code>, le lien est créé <b>et</b> le work item change d'état (catégorie Resolved, à défaut Completed). Mots-clés : <code>fix</code>, <code>fixes</code>, <code>fixed</code>, ou un nom d'état comme <code>Closed</code>."},
+  {d:"proc", q:"Un commit GitHub mentionne <code>AB#142</code> mais aucun lien n'apparaît dans Azure Boards. Quel prérequis vérifier ?", a:"La connexion entre le projet et GitHub : <b>Project Settings → GitHub connections</b>. Sans elle, <code>AB#</code> ne fait rien. Authentification possible : app Azure Boards (Marketplace), OAuth, PAT (Personal Access Token) ou GitHub App."},
+  {d:"proc", q:"Où et dans quel ordre configure-t-on un service hook dans Azure DevOps ?", a:"En mode graphique : <b>Project Settings → Service hooks → Create subscription</b>. Ordre : service, événement, filtres, cible (URL, token, canal), test. C'est un abonnement au niveau du projet : aucune ligne dans le YAML du pipeline."},
+  {d:"proc", q:"Quelles sont les 4 portées de notification dans Azure DevOps ?", a:"<b>Personnelles</b> (abonnements individuels), <b>équipe</b> (alertes de groupe), <b>projet</b> (annonces à l'échelle du projet) et <b>globales</b> (niveau organisation)."},
+
+  // ===== D2 Code source =====
+  // --- Stratégies de branche ---
+  {d:"src", q:"Quelle stratégie de branchement garde le moins de branches de longue durée ?", a:"Le <b>trunk-based development</b> : <code>main</code>, des branches de moins de 2 jours et des feature flags."},
+  {d:"src", q:"<b>GitHub Flow</b> vs <b>GitFlow</b> ?", a:"GitHub Flow : <code>main</code> + branches courtes + pull request, modèle simple où l'on déploie depuis <code>main</code>. GitFlow : <code>main</code>, <code>develop</code>, <code>feature/*</code>, <code>release/*</code> et <code>hotfix/*</code>, pour des releases planifiées, mais inadapté au déploiement continu."},
+  {d:"src", q:"Qu'est-ce que Release Flow ?", a:"La stratégie de branchement interne de <b>Microsoft</b> : un trunk, <b>une branche de release par sprint</b> et du <code>cherry-pick</code>."},
+  {d:"src", q:"Sur quel type de branche ne faut-il jamais lancer un rebase ?", a:"Sur une branche <b>déjà poussée et partagée</b>. Le rebase réécrit l'historique : les copies locales des autres divergent. Sur une branche personnelle non partagée, aucun risque."},
+  {d:"src", q:"Dans un énoncé en français, que désigne une « validation atomique » ?", a:"Un <b>atomic commit</b> (Microsoft traduit « commit » par « validation ») : un commit qui porte <b>une seule modification logique</b>. S'il casse la production, on l'annule seul avec <code>git revert</code>, sans perdre le reste."},
+  {d:"src", q:"<b>Minimum number of reviewers</b> vs <b>Automatically included reviewers</b> ?", a:"Minimum number of reviewers : N approbations, de <b>n'importe qui</b>. Automatically included reviewers : des relecteurs <b>précis</b>, ajoutés d'office selon le chemin des fichiers modifiés (ex. <code>/security/*</code> → équipe Sécurité)."},
+  {d:"src", q:"Chaque pull request doit arriver sur <code>main</code> sous la forme d'un seul commit. Quelle branch policy ?", a:"<b>Limit merge types</b> : elle restreint les types de merge autorisés. Il suffit de n'autoriser que <b>Squash commit</b>, qui écrase toute la branche en un seul commit (historique propre, détail perdu)."},
+  {d:"src", q:"Branch policies : <b>Build validation</b> vs <b>Status checks</b> ?", a:"Build validation : un pipeline de build doit passer au vert. Status checks : la validation est confiée à un <b>service externe</b>."},
+  {d:"src", q:"Que fait le type de merge <b>Semi-linear merge</b> ?", a:"Un <b>rebase suivi d'un commit de fusion</b> : le compromis entre Rebase and fast-forward (linéaire, sans commit de fusion) et Merge (no fast-forward), qui conserve tous les commits derrière un commit de fusion."},
+  {d:"src", q:"Un correctif critique doit partir vite. Comment concilier gouvernance et urgence ?", a:"Par un <b>chemin accéléré (hotfix)</b> : des policies allégées pour les correctifs critiques, <b>sans supprimer toute validation</b>."},
+  // --- Gérer les dépôts ---
+  {d:"src", q:"Hook Git ou branch policy : faut-il choisir ?", a:"Non, on met les deux. Le hook apporte le <b>confort</b> : retour en quelques secondes avant le commit, mais contournable. La policy apporte la <b>garantie</b> : contrôle avant le merge, non contournable. Seul le hook peut modifier une opération, la policy ne fait que bloquer."},
+  {d:"src", q:"Qu'est-ce que l'inner source ?", a:"L'open source <b>derrière le pare-feu de l'entreprise</b> : tous les dépôts sont lisibles par tous. Pour corriger le code d'une autre équipe, plus besoin d'y écrire : on le lit, on le forke, on ouvre une pull request."},
+  {d:"src", q:"Pull request d'un fork vers le dépôt d'origine : quelles branch policies s'appliquent ?", a:"Celles du <b>dépôt de destination</b>. Le fork n'en a copié aucune, mais la pull request vise une branche de l'upstream : ses règles (relecteurs, build validation) s'imposent."},
+  {d:"src", q:"Quel risque crée un pipeline de validation de pull request quand la pull request vient d'un fork ?", a:"Le pipeline s'exécute sur le <b>code venu du fork</b> : un inconnu peut faire tourner son propre code sur tes agents de build."},
+  {d:"src", q:"Que fait Scalar sur un gros dépôt Git ?", a:"Il active automatiquement des optimisations Git : clone partiel, pré-récupération en arrière-plan, sparse-checkout, moniteur de système de fichiers, graphe de commit, multi-pack-index, repack incrémentiel. Microsoft l'utilise sur les dépôts Windows et Office."},
+  {d:"src", q:"Quelle commande retrouve un commit ou une branche supprimée ?", a:"<code>git reflog</code>, le journal de tous les déplacements de <code>HEAD</code>. <code>git log</code> ne suffit pas : le commit supprimé n'y apparaît plus. <code>git fsck --lost-found</code> liste, lui, les commits inaccessibles."},
+  {d:"src", q:"Tag Git vs release GitHub ?", a:"Tag : instantané figé du dépôt à un commit précis. Release : le <b>tag</b> + des notes de publication + des binaires attachés. Une release repose toujours sur un tag, jamais sur une branche."},
+
+  // ===== D3 Pipelines =====
+  // --- Stratégie de test ---
+  {d:"pip", q:"Que signifie shift-left dans une stratégie de test ?", a:"Déplacer les tests <b>plus tôt</b> dans le cycle, pas en supprimer (devise : fail fast, fail often). But : empêcher la propagation des défauts avant la fusion du code."},
+  {d:"pip", q:"Taxonomie des tests L0 à L3 : quel critère de classement, et que désigne chaque niveau ?", a:"Critère : le niveau de <b>dépendance externe</b>. <b>L0</b> : tests unitaires en mémoire, aucune dépendance. <b>L1</b> : base de données ou système de fichiers. <b>L2</b> : tests fonctionnels sur service déployé, dépendances critiques stubbées. <b>L3</b> : tests d'intégration sur un déploiement de production complet."},
+  {d:"pip", q:"Où placer dans le pipeline les tests unitaires, d'intégration, le smoke test et les tests de charge ?", a:"Unitaires : à <b>chaque commit</b> (rapides). Intégration : <b>après le build</b> (plus lents). Smoke test : juste <b>après le déploiement</b>. Charge et performance : <b>avant la production</b>, planifiés."},
+  {d:"pip", q:"Un projet affiche 95 % de couverture de code (code coverage). Que mesure ce chiffre, et que ne dit-il pas ?", a:"Il mesure le pourcentage de code source réellement <b>exécuté</b> pendant les tests automatisés. Il ne dit rien de la qualité : un test peut exécuter une ligne sans rien vérifier dessus."},
+  {d:"pip", q:"Cite des critères typiques de quality gate dans un pipeline de release.", a:"Zéro nouveau problème bloquant · couverture de code <b>&gt; 80 %</b> sur le nouveau code · aucune violation de licence · aucune vulnérabilité de dépendance · dette technique maintenue ou améliorée · benchmarks de performance conservés."},
+  {d:"pip", q:"Tu as des scripts Apache JMeter et tu veux des tests de charge sans gérer d'infrastructure. Quel service Azure ?", a:"<b>Azure Load Testing</b> : service de test de charge entièrement managé, qui s'appuie sur Apache JMeter. Les métriques remontent via Azure Monitor et le service s'intègre à Azure Pipelines comme à GitHub Actions."},
+  {d:"pip", q:"SonarCloud : quelles sont les 3 catégories de problèmes affichées dans le tableau de bord ?", a:"<b>Vulnérabilités</b> (failles de sécurité exploitables), <b>bugs</b> (erreurs de logique) et <b>code smells</b> (mauvaise conception, code dur à maintenir), chacun avec une estimation du temps de réparation. SonarCloud s'appelle désormais SonarQube Cloud : les deux noms peuvent apparaître."},
+  // --- Pipelines ---
+  {d:"pip", q:"Dans quel ordre s'emboîtent les quatre niveaux d'un pipeline Azure Pipelines ?", a:"<b>Pipeline &gt; Stage &gt; Job &gt; Task</b>. La task est le plus petit élément : un job contient des tasks, jamais l'inverse."},
+  {d:"pip", q:"Un job compile l'application, un autre la déploie. Comment le second récupère-t-il les fichiers produits ?", a:"Par un <b>artefact</b> : le premier job le publie, le second le télécharge. Chaque job tourne sur son propre agent, donc peut-être sur une autre machine : l'artefact est le seul moyen de passer des fichiers d'un job à l'autre."},
+  {d:"pip", q:"Pipeline YAML vs pipeline Classic : où la définition est-elle stockée, et qu'est-ce que cela change ?", a:"YAML : dans le <b>dépôt</b>, versionnée avec le code (historique Git, revue par pull request, pipeline différent par branche). Classic : dans la base Azure DevOps, et toute modification s'applique immédiatement à tous, sans revue."},
+  {d:"pip", q:"Un agent Microsoft-hosted conserve-t-il le cache npm ou les fichiers d'une exécution à l'autre ?", a:"Non. Chaque exécution démarre sur une <b>machine virtuelle neuve</b>, détruite à la fin : rien n'est conservé. Pour garder un état entre deux exécutions, il faut un agent self-hosted, dont la machine est persistante."},
+  {d:"pip", q:"Dans quels cas un agent self-hosted s'impose-t-il face à un agent Microsoft-hosted ?", a:"<b>Logiciel propriétaire</b> ou sous licence à installer, accès au <b>réseau interne</b>, <b>builds très longs</b> (aucune limite de durée). Contrepartie : la maintenance de la machine est à ta charge."},
+  {d:"pip", q:"Un agent self-hosted est derrière le pare-feu de l'entreprise. Quel port entrant faut-il ouvrir ?", a:"<b>Aucun</b>. C'est toujours l'agent qui initie la connexion, en <b>HTTPS 443 sortant</b> (modèle de type polling). Azure Pipelines ne pousse jamais vers l'agent."},
+  {d:"pip", q:"Quels sont les 4 types de jobs d'Azure Pipelines, et où s'exécute chacun ?", a:"<b>Agent pool job</b> : sur un agent d'un pool (cas standard). <b>Container job</b> : dans un conteneur, sur un agent. <b>Deployment group job</b> : sur plusieurs machines cibles. <b>Agentless job</b> (server job) : sur les serveurs Azure DevOps."},
+  {d:"pip", q:"Un job doit tourner uniquement sur les agents du pool équipés de Java 17. Quel mécanisme utiliser ?", a:"Des <b>demands</b> sur les capabilities de l'agent, avec la condition <b>Equals</b> (ex. <code>JavaVersion = 17</code>) ou <b>Exists</b> (la capability existe). Le pool choisit la famille de machines, les demands filtrent dedans."},
+  {d:"pip", q:"Peut-on réserver des jobs parallèles (parallel jobs) à un projet ou à un agent pool précis ?", a:"Non. Un job parallèle est un slot d'exécution simultanée pour <b>toute l'organisation</b>, sans partitionnement possible. Si un projet occupe tous les slots, les pipelines des autres projets attendent."},
+  {d:"pip", q:"Niveau gratuit d'Azure Pipelines sur agents Microsoft-hosted : quelles limites pour un projet privé ?", a:"<b>1</b> job parallèle, <b>60 minutes</b> maximum par job, <b>1 800 minutes</b> par mois. Un job parallèle payant lève le plafond mensuel et porte la limite à 360 minutes par job. Les projets publics (10 jobs gratuits) sont retirés : plus aucune création possible."},
+  {d:"pip", q:"Selon la règle d'estimation de Microsoft, combien de jobs parallèles prévoir pour une équipe ?", a:"<b>1 job parallèle pour 4 à 5 utilisateurs</b>. Il en faut davantage avec plusieurs équipes en intégration continue, plusieurs branches actives avec triggers, plusieurs applications ou des pipelines multi-stages parallèles."},
+  {d:"pip", q:"Une matrice (<code>strategy: matrix</code>) de 3 configurations tourne avec un seul job parallèle. Que se passe-t-il ?", a:"Les 3 configurations s'exécutent <b>en série</b>. Chaque configuration consomme un slot : N configurations simultanées exigent N jobs parallèles."},
+  {d:"pip", q:"Quels sont les 4 types de templates YAML d'Azure Pipelines ?", a:"<b>Stage</b>, <b>job</b>, <b>step</b> et <b>variable</b>. Un template est une partie réutilisable d'un pipeline, placée dans un fichier séparé et appelée par <code>- template: chemin/fichier.yml</code>."},
+  {d:"pip", q:"Un pipeline doit démarrer à la fin d'un autre et consommer ses artefacts. Que déclarer dans le YAML ?", a:"Une ressource <code>pipelines</code> sous <code>resources:</code> : <code>source:</code> désigne le pipeline amont et <code>trigger: true</code> déclenche le pipeline courant quand celui-ci se termine."},
+  {d:"pip", q:"Ressource <code>containers</code> : quelle différence entre un container job et un service container ?", a:"Container job : les steps s'exécutent <b>dans</b> le conteneur. Service container (conteneur de service) : il tourne <b>à côté</b> du job, par exemple une base de données pour les tests, avec ses ports déclarés sous <code>ports:</code>."},
+  {d:"pip", q:"Ton pipeline Azure doit aussi extraire un dépôt GitHub. Checkout inline ou ressource de dépôt ?", a:"<b>Ressource de dépôt</b> : sous <code>resources: repositories:</code>, avec <code>type: github</code> et <code>endpoint:</code> qui nomme la service connection. L'inline <code>checkout: git://Projet/Depot</code> suffit pour Azure Repos dans la même organisation, sans service connection."},
+  {d:"pip", q:"Un pipeline se contente d'appeler une API, sans code source. Comment éviter l'extraction du dépôt ?", a:"<code>- checkout: none</code> : aucun dépôt n'est extrait. Sans aucune étape <code>checkout</code>, Azure extrait automatiquement le dépôt courant au début de chaque job (<code>checkout: self</code> par défaut)."},
+  {d:"pip", q:"Sur quelles branches un pipeline YAML déclenche-t-il la CI (intégration continue) par défaut ?", a:"Sur <b>toutes les branches</b>. Pour restreindre : <code>trigger: branches:</code> avec <code>include:</code> et <code>exclude:</code>. Le déclenchement sur pull request se déclare à part, sous <code>pr:</code>."},
+  {d:"pip", q:"Pourquoi ne jamais attacher un self-hosted runner à un dépôt GitHub public ?", a:"N'importe qui peut ouvrir une pull request contenant du code malveillant : le workflow l'exécuterait sur <b>ton infrastructure</b> (exécution de code arbitraire). Self-hosted runners : dépôts privés uniquement, sur des machines dédiées."},
+  {d:"pip", q:"Combien de temps GitHub conserve-t-il par défaut les artefacts et les logs d'un workflow ?", a:"<b>90 jours</b> par défaut. La durée se règle de 1 à 90 jours sur un dépôt public, de 1 à <b>400 jours</b> sur un dépôt privé, et artefact par artefact avec <code>retention-days:</code>."},
+  {d:"pip", q:"L'équipe veut recompiler le code avant la production, après validation en staging. Pourquoi est-ce une erreur ?", a:"Cela viole l'<b>immuabilité</b> : on déploierait autre chose que ce qui a été testé. On compile une fois, puis on déploie le même package partout (build once, deploy many). Seule la <b>configuration</b> change d'un environnement à l'autre."},
+  {d:"pip", q:"Approbation vs gate dans un pipeline de release ?", a:"<b>Approbation</b> : un humain valide ou refuse, la release attend sa décision. <b>Gate</b> : une vérification automatique, réévaluée en boucle. Une approbation décide <b>si</b> la release continue, pas comment le déploiement s'exécute."},
+  {d:"pip", q:"Quels sont les quatre types de gates proposés par défaut dans un pipeline de release ?", a:"Appel d'une <b>Azure Function</b> · <b>alertes Azure Monitor</b> (aucune alerte active) · appel d'une <b>API REST</b> · requête sur les <b>work items</b> (leur nombre respecte un seuil, par exemple aucun bug bloquant ouvert). La dernière est la plus utilisée."},
+  {d:"pip", q:"Gate de pré-déploiement vs gate de post-déploiement ?", a:"<b>Pré</b> : évaluée avant d'entrer dans le stage (ex. aucun problème actif dans le système de tickets). <b>Post</b> : évaluée après le déploiement, avant de promouvoir au stage suivant (ex. aucune alerte Azure Monitor après un canary)."},
+  // --- Déploiements ---
+  {d:"pip", q:"Quels sont les six modèles de déploiement modernes ?", a:"<b>Blue-green</b> (bascule totale) · <b>canary</b> (trafic progressif) · <b>dark launching</b> (code actif mais invisible) · <b>A/B testing</b> (variantes comparées) · <b>ring-based</b> (exposition progressive par cohortes) · <b>feature toggles</b> (contrôle en temps réel)."},
+  {d:"pip", q:"En blue-green, que devient l'ancien environnement après la bascule du trafic ?", a:"Il n'est <b>pas détruit</b> : il devient le secours immédiat. Au moindre problème, on rebascule le trafic vers lui en quelques secondes. D'où les deux atouts du blue-green : zéro temps d'arrêt et rollback immédiat."},
+  {d:"pip", q:"Quelle fonctionnalité d'Azure App Service implémente nativement le blue-green ?", a:"Les <b>deployment slots</b> : blue-green est le pattern, les slots son implémentation Azure. Chaque slot est une instance d'application isolée, avec son propre <b>nom d'hôte</b> et sa <b>configuration</b> indépendante."},
+  {d:"pip", q:"Canary vs déploiement en anneaux (ring-based deployment) ?", a:"<b>Canary</b> : une seule phase de validation, sur un petit sous-ensemble d'utilisateurs ou de trafic. <b>Anneaux</b> : plusieurs phases graduées, sur des cohortes choisies délibérément, chaque anneau étant un stage distinct du pipeline."},
+  {d:"pip", q:"Canary vs A/B testing : quel objectif pour chacun ?", a:"<b>Canary</b> : savoir si la nouvelle version casse (objectif : maîtriser le risque). <b>A/B testing</b> : savoir quelle variante est la meilleure (objectif : une métrique métier, comme le taux de conversion)."},
+  {d:"pip", q:"Le code est prêt, mais la fonctionnalité ne doit être visible que dans deux semaines. Comment ne pas retarder le déploiement ?", a:"En découplant version <b>technique</b> (code déployé) et version <b>fonctionnelle</b> (fonctionnalité visible) grâce à un <b>feature flag</b> : le code part en production flag éteint, on l'allume le moment venu, sans redéploiement."},
+  {d:"pip", q:"Azure App Configuration conserve-t-il automatiquement les versions successives d'une valeur ?", a:"Non : App Configuration ne versionne pas automatiquement les valeurs modifiées. Parade officielle : utiliser le <b>label</b> comme numéro de version (version applicative ou identifiant de commit Git), ce qui relie la valeur à un artefact de build précis."},
+  {d:"pip", q:"La v1.1 ajoute en base une colonne obligatoire que la v1.0 ignore. Comment faire tourner les deux versions en parallèle ?", a:"Par une <b>migration en deux temps</b> (changements rétrocompatibles) : d'abord ajouter la colonne en <b>nullable</b>, les deux versions cohabitent. Puis la rendre obligatoire une fois l'ancienne version retirée. Sans exécution parallèle, ni blue-green ni canary."},
+  {d:"pip", q:"Dans GitHub Actions, comment exiger une approbation avant le job qui déploie en production ?", a:"Associer le job à un environnement (<code>environment: production</code>) qui porte des <b>règles de protection</b> : approbations requises, temporisation, branches autorisées. C'est le pendant des approvals d'Azure DevOps."},
+  {d:"pip", q:"ACI (Azure Container Instances) ou AKS (Azure Kubernetes Service) : lequel pour quel besoin ?", a:"ACI : conteneur <b>serverless</b>, sans infrastructure à gérer, pour une tâche ponctuelle (démarrage rapide, facturation à la seconde). AKS : <b>orchestration</b> Kubernetes managée, pour des microservices complexes et la mise à l'échelle."},
+  {d:"pip", q:"Déployer un conteneur : quand choisir App Service, quand choisir Azure Container Apps ?", a:"App Service : application web classique en conteneur, avec <b>slots de déploiement</b>. Container Apps : plateforme serverless pour microservices, scaling événementiel avec KEDA (Kubernetes Event-driven Autoscaling) et <b>blue-green intégré</b>."},
+  // --- Infrastructure as Code ---
+  {d:"pip", q:"IaC (Infrastructure as Code) : que décrit-on en <b>déclaratif</b>, et que décrit-on en <b>impératif</b> ?", a:"Déclaratif : <b>ce que</b> tu veux (l'état final), l'outil calcule l'ordre et les dépendances. Exemples : Bicep, Terraform, manifestes Kubernetes. Impératif : <b>comment</b> y arriver, étape par étape, dans l'ordre que tu écris. Exemples : PowerShell, Azure CLI, scripts Bash ou Python."},
+  {d:"pip", q:"Quels sont les 3 composants de DSC (Desired State Configuration) ?", a:"<b>Configurations</b> : scripts PowerShell déclaratifs qui définissent l'état voulu. <b>Resources</b> : le code qui met et maintient la cible dans cet état, livré dans des modules PowerShell. <b>LCM</b> (Local Configuration Manager) : le moteur sur chaque nœud, qui interroge le système et réapplique la configuration."},
+  {d:"pip", q:"DSC (Desired State Configuration) : quelle différence entre le mode <b>push</b> et le mode <b>pull</b> ?", a:"<b>Push</b> : un administrateur applique activement la configuration et la pousse vers le nœud, utile pour les tests et l'application immédiate. <b>Pull</b> : le nœud va chercher sa configuration auprès d'un pull server, contrôle central auquel il remonte son rapport de conformité."},
+  {d:"pip", q:"Azure Automation State Configuration : quelles sont les 3 étapes pour appliquer une configuration à des machines ?", a:"1. <b>Écrire</b> un script PowerShell avec l'élément <code>configuration</code>. 2. <b>Charger et compiler</b> dans Azure Automation : le résultat est un fichier <b>MOF</b> (Managed Object Format). 3. <b>Assigner</b> les nœuds, qui tirent le MOF et l'appliquent. Retrait du service le 30/09/2027, successeur : Azure Machine Configuration."},
+  {d:"pip", q:"Azure Automation : quel type de runbook choisir pour exécuter des tâches en parallèle et poser des checkpoints ?", a:"Le <b>PowerShell Workflow runbook</b>. En contrepartie, il démarre plus lentement (compilation). Pour une tâche courte et séquentielle, le <b>PowerShell runbook</b> simple est plus efficace : démarrage rapide, mais ni parallélisme ni checkpoints."},
+  {d:"pip", q:"Azure Automation : à quel moment peut-on lire l'URL d'un webhook de runbook ?", a:"<b>Uniquement à la création</b> du webhook : le portail ne l'affiche plus ensuite. L'URL est générée automatiquement et contient un jeton qui permet de lancer le runbook sans autre authentification : note-la en lieu sûr et traite-la comme un mot de passe."},
+  {d:"pip", q:"Quel code HTTP renvoie le webhook d'un runbook Azure Automation quand l'appel est réussi ?", a:"<b>202 Accepted</b>, pas 200 : la requête POST est acceptée et le runbook mis en file d'attente, pas terminé. Le webhook ne dit ni quand le job finit ni son statut : il faut reprendre le <code>JobId</code> renvoyé et interroger PowerShell ou l'API Azure Automation."},
+  {d:"pip", q:"La sécurité refuse tout port entrant depuis Internet. Comment exécuter des runbooks Azure Automation sur les serveurs locaux ?", a:"Avec un <b>Hybrid Runbook Worker</b> : aucun port entrant requis, seul le <b>TCP 443 sortant</b> vers Internet. Le worker local initie toute la communication, télécharge le runbook et l'exécute sur place. Azure ne pousse jamais rien vers le datacenter."},
+  {d:"pip", q:"Bicep : quelles sont les 4 portées de déploiement (scopes), et laquelle s'applique par défaut ?", a:"<code>resourceGroup</code> (<b>par défaut</b>, la plupart des déploiements), <code>subscription</code>, <code>managementGroup</code> (déploiements à l'échelle de l'entreprise) et <code>tenant</code>."},
+  {d:"pip", q:"Par quoi Bicep remplace-t-il le template lié (linked template) d'ARM (Azure Resource Manager) ?", a:"Par le mot-clé <code>module</code>, qui pointe vers un <b>fichier local</b> du dépôt Git. Le template lié exigeait une URI HTTPS : il fallait un compte de stockage pour héberger les templates et un jeton SAS (Shared Access Signature), visible dans les journaux de déploiement."},
+  {d:"pip", q:"Bicep : comment indiquer qu'une ressource doit être déployée après une autre ?", a:"Il n'y a <b>rien à écrire</b> : Bicep déduit les dépendances des références entre ressources. Le <code>dependsOn</code> explicite des templates ARM (Azure Resource Manager) n'est plus nécessaire."},
+  // --- Gérer les pipelines ---
+  {d:"pip", q:"Pour suivre la durée d'un pipeline, quelle statistique regarder plutôt que la moyenne ?", a:"Les <b>percentiles</b>. Un P50 à 8 min, un P90 à 12 min et un P99 à 25 min révèlent une variance que la moyenne masque."},
+  {d:"pip", q:"Les développeurs attendent avant que le build démarre, ou le build est lent une fois lancé : quelle métrique, quelle action ?", a:"Attente avant le démarrage = <b>queue time</b> (attente d'un agent disponible) → ajouter des agents ou des jobs parallèles. Lenteur une fois lancé = <b>duration</b> (exécution) → paralléliser ou optimiser les tâches."},
+  {d:"pip", q:"Qu'est-ce qu'un test instable (flaky test), et comment Azure DevOps le détecte-t-il ?", a:"Un test qui donne des résultats <b>différents</b> (réussite ou échec) <b>sans aucun changement</b> du code ni de l'environnement. Détection système : un test qui échoue puis réussit quand il est <b>relancé</b> dans la même exécution est marqué flaky."},
+  {d:"pip", q:"Un test instable (flaky test) fait échouer le pipeline de toute l'équipe. Que faire en attendant de le corriger ?", a:"Le mettre en <b>quarantaine</b> : il s'exécute à part, avec un résultat informatif et non bloquant, le temps de traiter sa cause racine. Azure DevOps sait aussi exclure les tests marqués flaky du résultat du build."},
+
+  // ===== D4 Sécurité & Conformité =====
+  // --- Authentification et autorisation ---
+  {d:"sec", q:"Microsoft Entra ID : application, service principal, managed identity, qui est quoi ?", a:"<b>Application</b> (app registration) : le moule, définition globale. <b>Service principal</b> : son empreinte locale dans un tenant, c'est lui qui reçoit les permissions. <b>Managed identity</b> : un service principal spécialisé, dont Azure gère les identifiants."},
+  {d:"sec", q:"Managed identity system-assigned ou user-assigned : quelles différences de création et de cycle de vie ?", a:"<b>System-assigned</b> : créée par le service Azure, liée à une seule ressource, elle disparaît avec elle. <b>User-assigned</b> : ressource Azure indépendante, créée à la main, attachable à plusieurs ressources, elle leur survit."},
+  {d:"sec", q:"Service connection en workload identity federation : que font les modes automatique et manuel ?", a:"<b>Automatique</b> : génère le service principal et lui attribue les autorisations sur le groupe de ressources ou l'abonnement. <b>Manuel</b> : exige une managed identity user-assigned ou un service principal déjà provisionné, plus des informations d'identification fédérées (émetteur et sujet)."},
+  {d:"sec", q:"Un outil interne doit lire l'état des pull requests de 40 dépôts GitHub : GitHub App ou OAuth App ?", a:"<b>GitHub App</b>, la pratique recommandée pour l'accès programmatique aux API : identité propre, permissions granulaires, jetons à durée limitée. Une OAuth App agit <b>au nom d'un utilisateur</b> : le jour où il part, l'outil casse."},
+  {d:"sec", q:"GitHub Actions : comment le jeton <code>GITHUB_TOKEN</code> est-il créé, et quelle est sa portée ?", a:"GitHub le génère <b>automatiquement à chaque exécution</b> et l'injecte comme secret, sans aucune configuration. Sa portée s'arrête au <b>dépôt du workflow</b> et il ne vit que le temps de l'exécution."},
+  {d:"sec", q:"GitHub : collaborateur externe (outside collaborator) ou collaborateur invité (guest collaborator), quelle différence ?", a:"<b>Externe</b> → niveau <b>organisation</b> : un non-membre qui accède à des dépôts précis (le consultant sur un seul dépôt). <b>Invité</b> → niveau <b>Enterprise</b> : accès restreint aux dépôts internes, pour fournisseurs et sous-traitants."},
+  {d:"sec", q:"Peut-on donner un accès en lecture seule à un collaborateur sur un dépôt privé d'un compte GitHub personnel ?", a:"<b>Non.</b> Un compte personnel n'a que 2 rôles, propriétaire et collaborateur, et le collaborateur reçoit lecture <b>et</b> écriture en bloc. Pour de la lecture seule, il faut passer par une <b>organisation</b>."},
+  {d:"sec", q:"Azure DevOps : quels sont les 3 mécanismes qui déterminent ce qu'un utilisateur peut réellement faire ?", a:"<b>Appartenance</b> à des groupes de sécurité + <b>autorisations</b> (explicites ou héritées, aux étendues organisation, projet et objet) + <b>niveau d'accès</b> (lié à la licence). Ils sont cumulatifs : le bon groupe ne donne rien si la licence bloque, et inversement."},
+  {d:"sec", q:"Peut-on attribuer une autorisation Azure DevOps directement à un groupe Microsoft Entra ID ?", a:"<b>Non.</b> Les autorisations s'attribuent à des groupes Azure DevOps ou à des utilisateurs individuels. On ajoute donc le groupe Entra <b>dans</b> un groupe Azure DevOps, qui porte les autorisations."},
+  {d:"sec", q:"Azure DevOps : un utilisateur est dans un groupe qui autorise une action et dans un autre qui la refuse. Résultat ?", a:"Le <b>refus explicite</b> (Deny) l'emporte sur l'autorisation (Allow) accordée par un autre groupe. D'où la bonne pratique : réserver le Deny aux exceptions, car il provoque des cascades de restrictions involontaires."},
+  // --- Informations sensibles ---
+  {d:"sec", q:"Réglage non sensible, secret, fichier requis sur l'agent : où ranger chacun ?", a:"Réglage non sensible → <b>Azure App Configuration</b>. Secret, clé ou certificat → <b>Azure Key Vault</b>. Fichier dont le pipeline a besoin sur l'agent (certificat de signature de code, clé SSH, profil de provisionnement) → <b>secure file</b>."},
+  {d:"sec", q:"Par quel mécanisme les secrets d'un Key Vault arrivent-ils jusqu'aux tâches d'un pipeline Azure Pipelines ?", a:"Par un <b>variable group</b> relié au Key Vault. Le pipeline accède au coffre via une <b>service connection</b>, portée par une identité (service principal ou managed identity)."},
+  // --- Analyse de sécurité ---
+  {d:"sec", q:"GHAS (GitHub Advanced Security) : quelles sont les 3 analyses et que cherche chacune ?", a:"<b>Code scanning</b> (CodeQL) : vulnérabilités, anti-patterns et code smells. <b>Dependency scanning</b> (Dependabot) : dépendances obsolètes ou vulnérables. <b>Secret scanning</b> : clés, tokens et mots de passe commités."},
+  {d:"sec", q:"Comment CodeQL analyse-t-il le code, et quelles failles détecte-t-il ?", a:"C'est un moteur d'<b>analyse statique</b> qui traite le code comme une <b>base de données interrogeable</b>. Il détecte les injections SQL, le XSS (cross-site scripting), les failles d'authentification et les défauts de conception."},
+  {d:"sec", q:"Une vulnérabilité est publiée dans une bibliothèque tierce utilisée par le projet : CodeQL ou Dependabot ?", a:"<b>Dependabot</b> : il surveille les <b>dépendances</b> obsolètes ou vulnérables. <b>CodeQL</b> analyse <b>ton propre code</b> (code scanning). Deux outils, deux cibles."},
+
+  // ===== D5 Instrumentation =====
+  // --- Configurer le monitoring ---
+  {d:"ins", q:"Azure Monitor, Log Analytics, Application Insights : quel est le rôle de chacun ?", a:"Azure Monitor = la supervision <b>unifiée</b> (le parapluie), cloud et on-premises. Log Analytics = le <b>magasin de logs</b>, interrogé en KQL (Kusto Query Language). Application Insights = l'<b>APM</b> (Application Performance Monitoring), orientée application."},
+  {d:"ins", q:"Application Insights : quand choisir la runtime instrumentation, quand choisir le SDK (Software Development Kit) ?", a:"Runtime instrumentation : <b>aucune modification du code</b> ni redéploiement, il suffit d'un accès admin au serveur pour y installer l'agent. SDK : accès au code source et redéploiement, <b>obligatoire</b> pour suivre un événement métier custom."},
+  {d:"ins", q:"Comment repérer sur les courbes d'Application Insights qu'une dégradation coïncide avec un déploiement ?", a:"Avec les <b>release annotations</b> : elles marquent le déploiement directement sur les courbes (numéro de build, notes de version, environnement). Azure DevOps les génère <b>automatiquement</b> depuis les pipelines ; les annotations personnalisées se créent en <b>PowerShell</b>."},
+  {d:"ins", q:"Un site reçoit 5 000 requêtes/min le jour et 500 la nuit. Quel type de seuil d'alerte Azure Monitor choisir ?", a:"Les <b>dynamic thresholds</b> : ils calculent une baseline par apprentissage, tiennent compte de la saisonnalité (jour, semaine, mois) et alertent sur l'anomalie à toute heure. Un seuil fixe rate les pics de journée ou alerte en boucle la nuit."},
+  {d:"ins", q:"Quel outil Application Insights prévient d'une anomalie sans qu'aucun seuil ait été défini ?", a:"<b>Smart Detection</b> : détection automatique d'anomalies, comme une hausse des échecs, une dégradation des performances ou une fuite mémoire."},
+  // --- Analyser les métriques ---
+  {d:"ins", q:"Quel outil Application Insights montre la télémétrie en temps réel pendant un déploiement ?", a:"<b>Live Metrics Stream</b> : temps quasi réel, rafraîchi à la <b>seconde</b>. C'est l'outil pour valider un déploiement au moment où il se produit."},
+  {d:"ins", q:"Dans un système distribué, quel outil Application Insights montre quel composant est en cause ?", a:"<b>Application Map</b> : la carte des composants et de leurs dépendances, avec la santé et les métriques de chaque composant."},
+  {d:"ins", q:"Azure Dashboard, workbook ou Power BI : quelle vocation pour chacun ?", a:"Dashboard pour <b>surveiller</b> (grille dense, rafraîchissement automatique). Workbook Azure Monitor pour <b>analyser</b> (paramètres, clic pour filtrer, drill-down, rafraîchissement manuel). Power BI pour <b>rapporter</b>."},
+  {d:"ins", q:"En KQL (Kusto Query Language), quel filtre placer en premier dans une requête et pourquoi ?", a:"Le filtre de <b>temps</b>, par exemple <code>where TimeGenerated &gt; ago(24h)</code>. La colonne <code>TimeGenerated</code> est indexée automatiquement : c'est ce qui permet de compter des dizaines de millions de points en quelques secondes."},
+
+  // ===== Pièges d'examen (numérotés, groupés par thème) =====
+  // --- Processus ---
+  {d:"pie", q:"Piège 1 · Processus · Un message de commit GitHub se termine par <code>AB#142 fixed</code>. Le work item passe-t-il à Done ?", a:"Non : le mot-clé doit <b>précéder</b> la référence (<code>Fixed AB#142</code>). Ici, <code>AB#142</code> est traité comme une mention sans mot-clé : simple lien, pas de changement d'état."},
+  {d:"pie", q:"Piège 2 · Processus · Un build échoue : l'équipe veut un message dans un canal Slack. Notification ou service hook ?", a:"<b>Service hook</b> : Slack est un système externe. Le critère n'est pas qui reçoit, mais si l'événement <b>sort d'Azure DevOps</b>. Une notification reste un canal interne (email, flux d'activité, alerte dans l'interface). Même réponse pour Teams, Trello ou Jenkins."},
+  // --- Git ---
+  {d:"pie", q:"Piège 3 · Git · Squash commit : stratégie de branchement ou type de merge ?", a:"Un <b>type de merge</b>. Test infaillible : il figure dans le menu déroulant au moment de compléter une pull request, avec Merge (no fast-forward), Rebase and fast-forward et Semi-linear merge. Les stratégies de branchement sont trunk-based, GitHub Flow, GitFlow et Release Flow."},
+  {d:"pie", q:"Piège 4 · Git · Depuis une feature branch, <code>git rebase main</code> modifie-t-il <code>main</code> ?", a:"Non. Il <b>rejoue les commits de la feature</b> au-dessus de <code>main</code> : ils reçoivent de nouveaux identifiants (SHA) et l'historique devient linéaire. <code>main</code> n'est pas modifié et rien n'est poussé."},
+  {d:"pie", q:"Piège 5 · Git · Une pull request a obtenu ses 2 approbations requises. Est-ce la preuve que le code compile ?", a:"Non. <b>Minimum number of reviewers</b> n'exige que des approbations humaines. Pour exiger qu'un pipeline passe au vert, il faut une autre branch policy : <b>Build validation</b>. Ce sont deux policies distinctes."},
+  {d:"pie", q:"Piège 6 · Git · Azure Repos : une branch policy est posée sur <code>main</code>. Faut-il activer en plus une protection contre les push directs ?", a:"Non. Appliquer une branch policy <b>protège automatiquement</b> la branche : plus aucun push direct possible. Il n'y a pas de réglage séparé à activer."},
+  {d:"pie", q:"Piège 7 · Git · Un hook <code>pre-commit</code> de détection de secrets garantit-il qu'aucun secret n'est commité ?", a:"Non. Un hook se contourne avec <code>git commit --no-verify</code>. Quand l'énoncé demande de <b>garantir</b>, la réponse est un contrôle côté serveur, non contournable : une branch policy."},
+  {d:"pie", q:"Piège 8 · Git · Un build n'a besoin que du dernier commit d'un gros dépôt : shallow clone ou VFS (Virtual File System) for Git ?", a:"Le <b>shallow clone</b> (clone superficiel) : <code>git clone --depth 1</code> tronque l'historique. VFS for Git, aujourd'hui relayé par Scalar, traite un autre problème : un dépôt trop gros pour le disque, dont les fichiers sont téléchargés à la demande."},
+  {d:"pie", q:"Piège 9 · Git · <code>git rm</code> suivi d'un commit retire-t-il un fichier sensible de l'historique ?", a:"Non : le fichier reste dans tous les commits précédents. Il faut <b>réécrire l'historique</b> avec <code>git filter-repo</code> (l'outil recommandé) ou BFG Repo-Cleaner (plus simple, plus rapide). <code>git filter-branch</code> est obsolète."},
+  {d:"pie", q:"Piège 10 · Git · Un secret poussé par erreur a été purgé de tout l'historique. L'incident est-il clos ?", a:"Non. Il faut aussi <b>révoquer</b> le secret : il a existé dans le dépôt, il a pu être cloné ou copié entre-temps. La purge seule ne règle pas le problème."},
+  // --- Pipelines ---
+  {d:"pie", q:"Piège 11 · Pipelines · Que déclare-t-on sous <code>resources:</code> dans un pipeline YAML : les agents et leur système d'exploitation ?", a:"Non. <code>resources</code> déclare les dépendances <b>externes</b> du pipeline, dont les 3 à connaître : <code>pipelines</code> (un autre pipeline), <code>repositories</code> (un autre dépôt) et <code>containers</code> (une image). L'agent se choisit avec <code>pool:</code>."},
+  {d:"pie", q:"Piège 12 · Pipelines · Dans un template Azure Pipelines, à quel moment une condition <code>${{ if ... }}</code> est-elle évaluée ?", a:"À la <b>compilation</b>, pas pendant l'exécution. Azure remplace chaque expression <code>${{ }}</code> (paramètre ou condition) par sa valeur <b>avant</b> de lancer le pipeline."},
+  {d:"pie", q:"Piège 13 · Pipelines · Peut-on attribuer le rôle User (Utilisateur) sur un agent pool d'organisation ?", a:"Non : ce rôle n'existe que sur les pools de <b>projet</b>, là où on utilise les agents dans un pipeline. Pool d'organisation (on administre) : Reader, Service Account (compte de service), Administrator. Pool de projet (on utilise) : Reader, <b>User</b>, Administrator."},
+  {d:"pie", q:"Piège 14 · Pipelines · Quels sont les trois types de jobs qui ne consomment aucun job parallèle (parallel job) ?", a:"Les jobs serveur (<b>agentless</b>), les jobs de <b>deployment group</b> et les jobs en attente d'<b>approbation manuelle</b>. Une approbation qui dure 3 jours ne bloque donc aucun slot."},
+  {d:"pie", q:"Piège 15 · Pipelines · Peut-on réutiliser un task group dans un pipeline YAML ?", a:"<b>Non</b> : les task groups ne fonctionnent que dans les pipelines <b>Classic</b>. En YAML, l'équivalent est le <b>template</b>. Le task group vit dans la base Azure DevOps, le template est un fichier du dépôt : les deux mondes ne communiquent pas."},
+  // --- GitHub Actions ---
+  {d:"pie", q:"Piège 16 · GitHub Actions · Un job sur un runner GitHub-hosted est-il interrompu au bout de 60 minutes ?", a:"Non : la limite est de <b>6 heures</b> par job. Les <b>60 minutes</b> sont la limite d'un job Azure Pipelines sur le niveau gratuit d'un projet privé. Mélanger les chiffres des deux plateformes est un distracteur classique."},
+  {d:"pie", q:"Piège 17 · GitHub Actions · Le job <code>deploy</code> télécharge l'artefact publié par le job <code>build</code> mais ne trouve rien. Que manque-t-il ?", a:"<code>needs: build</code> sur le job <code>deploy</code>. Sans <code>needs</code>, les jobs démarrent <b>en parallèle</b> : <code>deploy</code> cherche l'artefact avant que <code>build</code> l'ait publié."},
+  {d:"pie", q:"Piège 18 · GitHub Actions · Une variable créée par <code>export</code> dans un step <code>run:</code> est-elle visible dans le step suivant ?", a:"Non : chaque step s'exécute dans un <b>shell séparé</b>, la variable ne survit pas à l'étape. Mécanisme officiel : <code>echo 'NOM=valeur' &gt;&gt; $GITHUB_ENV</code>, qui la rend disponible dans les steps suivants."},
+  {d:"pie", q:"Piège 19 · GitHub Actions · Action GitHub : le tag <code>@v4</code> est-il aussi sûr qu'un SHA (Secure Hash Algorithm) de commit ?", a:"Non. Un tag peut être <b>déplacé</b> vers un autre commit, y compris malveillant si le compte du mainteneur est compromis. Un SHA de commit est <b>immuable</b> : c'est la référence la plus sûre."},
+  // --- Conteneurs ---
+  {d:"pie", q:"Piège 20 · Conteneurs · Dans un Dockerfile, <code>RUN</code> et <code>CMD</code> sont-ils interchangeables ?", a:"Non : ce qui les distingue, c'est le <b>moment</b>. <code>RUN</code> s'exécute une fois, pendant la construction de l'image. <code>CMD</code> définit la commande par défaut, lancée à chaque démarrage du conteneur."},
+  {d:"pie", q:"Piège 21 · Conteneurs · Un Dockerfile multi-étapes (multi-stage) sert-il seulement à réduire la taille de l'image ?", a:"Non, il apporte deux bénéfices : <b>taille réduite</b> (déploiement plus rapide, moins de stockage) et <b>surface d'attaque réduite</b> (pas de compilateur en production). Le second est souvent la réponse attendue aux questions de sécurité."},
+  // --- Release ---
+  {d:"pie", q:"Piège 22 · Release · Séparation des tâches et approbation de release : laquelle est le principe, laquelle est le mécanisme ?", a:"La <b>séparation des tâches</b> (separation of duties) est le <b>principe</b> : celui qui commite ne peut pas être celui qui met en production. L'<b>approbation</b> est le <b>mécanisme</b> qui l'applique. Les deux vocabulaires tombent à l'examen."},
+  {d:"pie", q:"Piège 23 · Release · Une variable est définie au niveau du pipeline de release et au niveau d'un stage, sous le même nom. Laquelle s'applique ?", a:"Celle du <b>stage</b> : la variable la plus <b>spécifique</b> gagne. La variable de pipeline sert de valeur par défaut, dont héritent les stages qui ne la redéfinissent pas."},
+  // --- Déploiement ---
+  {d:"pie", q:"Piège 24 · Déploiement · Une entreprise veut adopter la livraison continue (continuous delivery). Doit-elle d'abord migrer vers les microservices ?", a:"<b>Non</b> : l'architecture microservices n'est pas un prérequis. Avec un monolithe, c'est plus difficile mais possible. Ce qui bloque vraiment : l'impossibilité d'exécuter <b>deux versions en parallèle</b>."},
+  {d:"pie", q:"Piège 25 · Déploiement · Swap staging ↔ production sans avoir coché « Deployment slot setting » sur la chaîne de connexion : que se passe-t-il ?", a:"Le paramètre <b>suit l'application</b> : la production se retrouve branchée sur la base de test. Case cochée, le paramètre reste <b>attaché au slot</b> et seul le code bascule."},
+  {d:"pie", q:"Piège 26 · Déploiement · Un feature flag est éteint depuis six mois. Peut-on le réaffecter à une nouvelle fonctionnalité ?", a:"<b>Jamais</b>. Un client peut l'avoir laissé allumé dans sa configuration : il recevrait la nouvelle fonctionnalité sans que personne ne l'ait décidé. Des défaillances de production très médiatisées viennent de cette réutilisation sans analyse d'impact."},
+  {d:"pie", q:"Piège 27 · Déploiement · L'A/B testing est-il un prérequis de la livraison continue (continuous delivery) ?", a:"Non, c'est l'inverse : l'A/B testing est un <b>résultat</b> de la livraison continue. Pouvoir pousser vite en production crée les fondations de l'expérimentation. La causalité va de la capacité de déploiement vers l'expérimentation."},
+  {d:"pie", q:"Piège 28 · Déploiement · Dans un déploiement en anneaux, qui compose le ring 0 ?", a:"Les <b>utilisateurs internes</b> de l'organisation (dogfooding), pas un petit pourcentage de clients fidèles. Environnement de validation contrôlé, retour direct vers l'ingénierie, impact externe minimal."},
+  {d:"pie", q:"Piège 29 · Déploiement · Quel mécanisme promeut automatiquement un déploiement d'un anneau vers l'anneau suivant ?", a:"La <b>gate post-déploiement</b> de l'anneau <b>courant</b>, pas celle de l'anneau suivant ni une approbation manuelle. Elle observe l'anneau pendant une période de stabilité (bake time), puis promeut ou interrompt le déploiement."},
+  {d:"pie", q:"Piège 30 · Déploiement · Un feature flag utilise le filtre <code>Percentage</code>. Qui évalue ce filtre : Azure Traffic Manager ?", a:"Non. Le filtre est évalué par le <b>feature manager</b>, dans l'application, à chaque requête. Azure App Configuration <b>stocke</b> le flag, le code l'évalue. Traffic Manager est un répartiteur de charge au niveau DNS (Domain Name System), sans lien avec les feature flags."},
+  // --- IaC ---
+  {d:"pie", q:"Piège 31 · IaC · Webhook Azure Automation et service hook Azure DevOps : est-ce le même mécanisme ?", a:"Non, les directions sont <b>inverses</b>. Webhook : un système <b>extérieur déclenche</b> le runbook par une requête HTTP POST. Service hook : Azure DevOps <b>prévient l'extérieur</b> quand un événement se produit."},
+  {d:"pie", q:"Piège 32 · IaC · DSC (Desired State Configuration) et Azure Policy font-ils le même travail contre la dérive de configuration ?", a:"Non, ils sont complémentaires. <b>DSC corrige</b> : il applique la configuration et remet en conformité un serveur qui a dévié. <b>Azure Policy empêche</b> : elle refuse le changement qui provoquerait la dérive sur les ressources Azure."},
+  {d:"pie", q:"Piège 33 · IaC · Bicep remplace-t-il les templates ARM (Azure Resource Manager) côté Azure ?", a:"Non. Bicep se <b>transpile en template ARM JSON</b> : Azure ne reçoit que de l'ARM. Les modes de déploiement (Incremental, Complete), la commande <code>az deployment group create</code> et toutes les fonctions ARM restent valables."},
+  // --- Sécurité ---
+  {d:"pie", q:"Piège 34 · Sécurité · Dependabot détecte une dépendance vulnérable : la met-il à jour tout seul ?", a:"<b>Non.</b> Il <b>ouvre une pull request</b>, par exemple « Bump lodash from 4.17.20 to 4.17.21 ». Il propose, il ne met jamais à jour seul : tu relis, le build tourne, puis tu fusionnes."},
+  {d:"pie", q:"Piège 35 · Sécurité · GitHub : pour voir les alertes de sécurité de tous les dépôts d'une organisation, faut-il le rôle Reader ?", a:"<b>Non</b> : Readers est un <b>groupe Azure DevOps</b>, pas un rôle GitHub. Sur GitHub, c'est le <b>gestionnaire de sécurité</b> (security manager) : alertes de sécurité et accès en lecture à tous les dépôts, sans être propriétaire."},
+  {d:"pie", q:"Piège 36 · Sécurité · Azure DevOps : quel groupe administre les pools d'agents, et lequel administre les service connections ?", a:"Pools d'agents → <b>Project Collection Administrators</b> (niveau organisation). Service connections et service hooks → <b>Project Administrators</b> (niveau projet). Les noms exacts comptent."},
+  {d:"pie", q:"Piège 37 · Sécurité · Avec la workload identity federation, qu'est-ce qui remplace le client secret ?", a:"Un <b>jeton court signé</b> par Azure DevOps ou GitHub, via OIDC (OpenID Connect). Microsoft Entra ID ne vérifie plus un secret partagé : il fait confiance à l'<b>émetteur</b> (issuer) et au <b>sujet</b> (subject) du jeton."},
+  {d:"pie", q:"Piège 38 · Sécurité · L'énoncé demande de déployer sans stocker aucun secret : Azure Key Vault est-il la bonne réponse ?", a:"<b>Non.</b> Key Vault stocke le secret de façon sécurisée, mais il reste un secret à gérer. Sans aucun secret → <b>workload identity federation</b>, fondée sur OIDC (OpenID Connect)."},
+  {d:"pie", q:"Piège 39 · Sécurité · Fichier sensible dans Azure Pipelines : secure file ou secret file, et quelle tâche le télécharge ?", a:"<b>Secure file</b> (fichier sécurisé), jamais « secret file ». La tâche est <code>DownloadSecureFile@1</code>, pas <code>DownloadSecretFile@1</code> : les deux orthographes peuvent figurer parmi les réponses proposées."},
+  {d:"pie", q:"Piège 40 · Sécurité · Key Vault : pour administrer le coffre sans lire les secrets, RBAC (role-based access control) ou access policy ?", a:"<b>Azure RBAC</b> gouverne la gestion du coffre (plan de contrôle). L'accès aux <b>données</b> (lire un secret) passe par une access policy, modèle historique, ou par un rôle RBAC de données, modèle recommandé. Un rôle de gestion comme Contributor ne lit donc aucun secret à lui seul."},
+  {d:"pie", q:"Piège 41 · Sécurité · Configuration custodian, configuration consumer, configuration store, secret store : qui fait quoi ?", a:"<b>Custodian</b> (ops et sécurité) : détient les valeurs, sans définir le schéma. <b>Consumer</b> (dev et test) : définit les réglages dont l'application a besoin. <b>Configuration store</b> : stocke le non sensible. <b>Secret store</b> : stockage dédié au sensible, séparé du précédent."},
+  {d:"pie", q:"Piège 42 · Sécurité · Le pipeline crée une machine virtuelle sans problème mais échoue en écrivant dans un blob : que manque-t-il ?", a:"Le rôle de <b>données</b> <b>Storage Blob Data Contributor</b>. Le rôle <b>Contributeur</b> (Contributor) relève du plan de contrôle : il gère la ressource (créer le compte de stockage, la machine virtuelle) mais ne permet pas d'écrire les données."},
+  // --- Monitoring ---
+  {d:"pie", q:"Piège 43 · Monitoring · Profiler ou Snapshot Debugger : lequel pour un bug de production impossible à reproduire en local ?", a:"<b>Snapshot Debugger</b> : instantané mémoire de production, avec la <b>valeur des variables locales</b> au moment de l'exception. Le <b>Profiler</b> répond à une autre question : quelle méthode du code consomme le temps."},
+  // --- Ajoute ici tes propres pièges d'examens blancs, à la suite de la numérotation ---
+
+  // ===== GitHub ↔ Azure DevOps =====
+  // --- Pipelines ---
+  {d:"eqv", q:"Quel est l'équivalent Azure Pipelines d'un workflow GitHub Actions, et où vit chaque fichier ?", a:"Le <b>pipeline</b>. GitHub : <code>.github/workflows/*.yml</code>. Azure : <code>azure-pipelines.yml</code>. Azure ajoute un niveau <b>stage</b> entre pipeline et job, qui n'existe pas nativement dans GitHub Actions."},
+  {d:"eqv", q:"Quel est l'équivalent Azure Pipelines d'une action GitHub, et comment les distinguer dans un extrait YAML ?", a:"La <b>task</b>. Azure : <code>task: NodeTool@0</code>, format <code>NomTask@version</code> sans slash. GitHub : <code>uses: actions/setup-node@v3</code>, un nom avec slash. Les noms ne se traduisent pas d'une plateforme à l'autre."},
+  {d:"eqv", q:"Quel est l'équivalent Azure Pipelines d'un runner GitHub, et du mot-clé <code>runs-on</code> ?", a:"L'<b>agent</b>. <code>runs-on: ubuntu-latest</code> devient <code>pool:</code> avec <code>vmImage: 'ubuntu-latest'</code>. Même modèle réseau en self-hosted des deux côtés : connexion HTTPS 443 sortante, aucun port entrant."},
+  {d:"eqv", q:"Quel est l'équivalent GitHub Actions des agent demands d'Azure Pipelines ?", a:"Les <b>labels</b> : <code>runs-on: [self-hosted, linux, x64, gpu]</code> cible un self-hosted runner par ses labels, comme les demands filtrent les agents d'un pool par leurs capabilities."},
+  {d:"eqv", q:"Quel mot-clé Azure Pipelines correspond au <code>needs:</code> de GitHub Actions ?", a:"<code>dependsOn:</code>. Exemple : <code>dependsOn: Build</code> sur le stage Deploy le fait attendre la réussite de Build, comme <code>needs: build</code> fait attendre un job GitHub."},
+  {d:"eqv", q:"Quel est l'équivalent GitHub Actions des templates d'Azure Pipelines ?", a:"Les <b>reusable workflows</b>. Tous deux partagent du YAML <b>entre</b> pipelines, alors que <code>strategy: matrix</code> répète un job <b>dans</b> un même pipeline avec des paramètres différents."},
+  // --- Dépôts, intégrations et permissions ---
+  {d:"eqv", q:"Quel est l'équivalent GitHub des branch policies d'Azure Repos ?", a:"Les <b>branch protection rules</b>. Même rôle, vocabulaire différent : dans un énoncé sur Azure Repos, la bonne réponse parle de branch policies, et « branch protection rules » y est un distracteur."},
+  {d:"eqv", q:"Quel est l'équivalent GitHub des service hooks d'Azure DevOps ?", a:"Les <b>webhooks</b>. Un service hook notifie un service externe quand un événement survient (ex. poster dans Slack si un build échoue). À ne pas confondre avec un Git hook, script local qui bloque ou modifie une opération Git."},
+  {d:"eqv", q:"Modèle de permissions : que manipule-t-on sur GitHub, et que manipule-t-on sur Azure DevOps ?", a:"<b>GitHub</b> → des <b>rôles</b> (propriétaire, membre, collaborateur externe). <b>Azure DevOps</b> → des <b>groupes de sécurité</b> (Contributors, Readers, Project Administrators). Premier réflexe devant un énoncé : repérer de quelle plateforme il parle."},
+
+  // ===== Syntaxe et commandes =====
+  // --- Git ---
+  {d:"cmd", q:"Que fait <code>git config core.hooksPath .githooks</code> ?", a:"Git utilise les hooks du dossier <code>.githooks/</code>, <b>versionné dans le dépôt</b> : c'est le moyen de partager des hooks, à lancer une fois par développeur après le clone. Alternative : Husky, outil npm, automatique à l'installation des dépendances."},
+  {d:"cmd", q:"Ta pull request a été acceptée. Quelles commandes resynchronisent ton fork avec le dépôt d'origine ?", a:"<code>git fetch upstream main</code>, <code>git rebase upstream/main</code>, puis <code>git push origin</code>. <code>upstream</code> est le dépôt d'origine (on y récupère, on n'y pousse jamais), <code>origin</code> est ton fork."},
+  // --- YAML des pipelines ---
+  {d:"cmd", q:"Traduire en Azure Pipelines les mots-clés GitHub Actions <code>on</code>, <code>uses</code>, <code>with</code>, <code>run</code> et <code>name</code> ?", a:"<code>on</code> → <code>trigger</code> · <code>uses</code> → <code>task</code> · <code>with</code> → <code>inputs</code> · <code>run</code> → <code>script</code> · <code>name</code> → <code>displayName</code>."},
+  {d:"cmd", q:"GitHub Actions : quand s'exécute un workflow planifié avec <code>cron: '0 8 * * 1-5'</code> ?", a:"À <b>8 h UTC</b> (temps universel coordonné), du lundi au vendredi. Ordre des 5 champs : minute, heure, jour, mois, jour de la semaine (dimanche = 0)."},
+  {d:"cmd", q:"Que fait <code>- task: DownloadSecureFile@1</code> avec <code>inputs: secureFile: 'ca.pem'</code> ?", a:"La tâche télécharge sur l'agent le secure file <code>ca.pem</code> stocké dans la Library. Si elle porte <code>name: caCertificate</code>, le chemin du fichier se lit ensuite avec <code>$(caCertificate.secureFilePath)</code>."},
+  // --- Dockerfile ---
+  {d:"cmd", q:"Dockerfile multi-étapes : que fait <code>COPY --from=publish /app/publish .</code> ?", a:"Elle copie des fichiers <b>entre étapes</b> : le résultat de l'étape nommée <code>publish</code> arrive dans l'image finale. Une étape se nomme avec <code>FROM image AS nom</code> et peut hériter d'une autre (<code>FROM build AS publish</code>)."},
+  {d:"cmd", q:"Dockerfile : que fait l'instruction <code>ADD</code> que <code>COPY</code> ne fait pas ?", a:"<code>ADD</code> copie des fichiers, mais accepte aussi une <b>URL</b> et <b>extrait automatiquement les archives</b>."},
+  // --- KQL, DSC et Bicep ---
+  {d:"cmd", q:"KQL (Kusto Query Language) : que fait <code>summarize max(CounterValue) by Computer, bin(TimeGenerated, 1m)</code> ?", a:"Elle calcule le maximum du compteur <b>par machine</b> et <b>par tranche d'une minute</b>. <code>summarize</code> agrège avec regroupement (l'équivalent d'un GROUP BY) et <code>bin()</code> arrondit les horodatages en tranches. Ajouter <code>| render timechart</code> pour obtenir un graphique temporel."},
+  {d:"cmd", q:"Dans un fichier de configuration DSC (Desired State Configuration), quels sont les 3 blocs imbriqués ?", a:"<code>configuration LabConfig { }</code> : bloc externe, porte le nom. <code>Node WebServer { }</code> : qui on configure, il peut y en avoir plusieurs. Bloc resource, comme <code>WindowsFeature IIS { Ensure = 'Present' }</code> : les propriétés, ici l'élément doit être présent."},
+  {d:"cmd", q:"Bicep : quels décorateurs remplacent <code>securestring</code> et <code>allowedValues</code> des templates ARM (Azure Resource Manager) ?", a:"<code>@secure()</code> remplace le type <code>securestring</code> : valeur sensible, non journalisée. <code>@allowed([...])</code> remplace <code>allowedValues</code> : restreint les valeurs à une liste. Le décorateur s'écrit au-dessus de la ligne <code>param</code>."},
+  {d:"cmd", q:"Bicep : que font <code>az bicep build</code> et <code>az bicep decompile</code> ?", a:"<code>az bicep build -f ./main.bicep</code> transpile le fichier en template ARM (Azure Resource Manager) JSON, pour l'inspecter. <code>az bicep decompile</code> convertit un template ARM existant en Bicep, avec des écarts possibles : certaines fonctionnalités ne sont pas totalement supportées."},
+
+  // ===== Astuces exam =====
+  // --- Mot-clé de l'énoncé → réponse attendue ---
+  {d:"tip", q:"Déclencheur : « fichiers Photoshop ou vidéos de 500 Mo »", a:"→ Git LFS (Large File Storage) : Git ne garde qu'un pointeur, le fichier binaire volumineux est stocké ailleurs et arrive à la demande."},
+  {d:"tip", q:"Déclencheur : « historique linéaire strict »", a:"→ Type de merge <b>Rebase and fast-forward</b> : les commits sont rejoués linéairement, sans commit de fusion."},
+  {d:"tip", q:"Déclencheur : « base de données sur le réseau interne »", a:"→ Agent <b>self-hosted</b> : un agent Microsoft-hosted n'atteint pas le réseau interne."},
+  {d:"tip", q:"Déclencheur : « le code tourne en production mais personne ne le voit »", a:"→ <b>Dark launching</b>."},
+  {d:"tip", q:"Déclencheur : « modifier un réglage sans redéployer ni redémarrer »", a:"→ <b>Azure App Configuration</b> : modification à chaud des réglages non sensibles et des feature flags."},
+  {d:"tip", q:"Déclencheur : « le template Bicep doit créer le groupe de ressources »", a:"→ Portée (scope) <code>subscription</code> : un groupe de ressources ne peut pas se créer à l'intérieur de lui-même."},
+  {d:"tip", q:"Déclencheur : « filtrer la sortie JSON d'une commande Azure CLI »", a:"→ Paramètre <code>--query</code>, dont le langage de requête s'appelle JMESPath."},
+  {d:"tip", q:"Déclencheur : « le workflow doit accéder à un autre dépôt »", a:"→ <b>PAT</b> (personal access token) : la portée de <code>GITHUB_TOKEN</code> s'arrête au dépôt du workflow, d'où une erreur 403 sur un autre dépôt."},
+  {d:"tip", q:"Déclencheur : « plusieurs ressources Azure partagent la même identité »", a:"→ Managed identity <b>user-assigned</b> : une seule identité, un rôle attribué une seule fois, attachée à toutes les ressources."},
+  {d:"tip", q:"Déclencheur : « dans le bon groupe mais ne voit pas Test Plans »", a:"→ Niveau d'accès <b>Basic + Test Plans</b>. Basic seul ouvre Boards, Repos, Pipelines et Artifacts, pas Azure Test Plans."},
+  {d:"tip", q:"Déclencheur : « vérifier la disponibilité du site depuis plusieurs pays »", a:"→ <b>Availability tests</b> (Application Insights) : tests synthétiques lancés depuis plusieurs régions."},
+];
+CARDS.forEach((c,i)=>c.id=i);
+
+/* ---------- État ---------- */
+let baseOrder = CARDS.map(c=>c.id);
+let filter = "all";
+let reviewOnly = false;
+let pos = 0;
+let flipped = false;
+const status = {}; // id -> 'known' | 'review'
+
+/* ---------- Persistance (localStorage, clé = texte de la question) ---------- */
+const LS_KEY = "az400-progress-v1";
+function saveStatus(){
+  try{
+    const m = {};
+    for(const id in status){ m[CARDS[id].q] = status[id]; }
+    localStorage.setItem(LS_KEY, JSON.stringify(m));
+  }catch(e){ /* stockage indisponible : progression session uniquement */ }
+}
+function loadStatus(){
+  try{
+    const m = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+    CARDS.forEach(c => { if(m[c.q]) status[c.id] = m[c.q]; });
+  }catch(e){}
+}
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const card = $("#card");
+
+function matches(id){
+  const c = CARDS[id];
+  if(filter!=="all" && c.d!==filter) return false;
+  if(reviewOnly && status[id]!=="review") return false;
+  return true;
+}
+function active(){ return baseOrder.filter(matches); }
+
+function setAccent(domKey){
+  const col = DOMAINS[domKey] ? DOMAINS[domKey].color : "var(--pip)";
+  document.documentElement.style.setProperty("--accent", col);
+  card.style.setProperty("--accent", col);
+}
+
+/* ---------- Rendu ---------- */
+function renderFilters(){
+  const box = $("#filters");
+  box.innerHTML = "";
+  const mk = (key,label,color) => {
+    const el = document.createElement("div");
+    el.className = "chip" + (filter===key ? " active":"");
+    el.innerHTML = (color?`<span class="dot" style="background:${color}"></span>`:"") + label;
+    el.onclick = () => { filter = key; pos = 0; flipped=false; render(); };
+    return el;
+  };
+  box.appendChild(mk("all","Tout",""));
+  Object.keys(DOMAINS).forEach(k=>box.appendChild(mk(k,DOMAINS[k].short,DOMAINS[k].color)));
+
+  const rt = document.createElement("div");
+  rt.className = "chip review-toggle" + (reviewOnly?" active":"");
+  const rvCount = Object.values(status).filter(s=>s==="review").length;
+  rt.innerHTML = "★ À revoir" + (rvCount?` (${rvCount})`:"");
+  rt.onclick = () => { reviewOnly = !reviewOnly; pos = 0; flipped=false; render(); };
+  box.appendChild(rt);
+}
+
+function render(){
+  renderFilters();
+  const list = active();
+  const total = list.length;
+  const knownN = Object.values(status).filter(s=>s==="known").length;
+  const reviewN = Object.values(status).filter(s=>s==="review").length;
+
+  // stats
+  $("#stats").innerHTML =
+    `<span class="k">carte ${total? (pos+1):0} / ${total}</span><br>`+
+    `<span class="ok">su ${knownN}</span> · <span class="rv">à revoir ${reviewN}</span>`;
+
+  const hasCards = total>0;
+  card.style.display = hasCards ? "" : "none";
+  $("#nav").style.display = hasCards ? "" : "none";
+  $("#actions").style.display = hasCards ? "" : "none";
+  $("#empty").style.display = hasCards ? "none" : "";
+
+  if(!hasCards){
+    $("#empty").innerHTML = reviewOnly
+      ? "<b>Aucune carte « à revoir ».</b><br>Marque des cartes avec « À revoir »,<br>ou désactive le filtre."
+      : "<b>Aucune carte dans ce filtre.</b>";
+    $("#railFill").style.width = "0%";
+    return;
+  }
+
+  if(pos>=total) pos = total-1;
+  if(pos<0) pos = 0;
+
+  const id = list[pos];
+  const c = CARDS[id];
+  const dom = DOMAINS[c.d];
+  setAccent(c.d);
+
+  // flip state
+  card.classList.toggle("flipped", flipped);
+  $("#flip").textContent = flipped ? "Question" : "Retourner";
+
+  // content
+  const eyebrow = `${dom.short} <span class="num">· ${pos+1}/${total}</span>`;
+  $("#feyebrow").innerHTML = eyebrow;
+  $("#beyebrow").innerHTML = eyebrow;
+  $("#qtext").innerHTML = c.q;
+  $("#atext").innerHTML = c.a;
+
+  // flags
+  const st = status[id];
+  const flagTxt = st==="known" ? "Su" : st==="review" ? "À revoir" : "";
+  const flagCls = "flag" + (st?` ${st}`:"");
+  ["#fflag","#bflag"].forEach(sel=>{
+    const el = $(sel);
+    el.textContent = flagTxt;
+    el.className = flagCls;
+    el.style.display = st ? "" : "none";
+  });
+
+  // rail
+  $("#railFill").style.width = ((pos+1)/total*100) + "%";
+}
+
+/* ---------- Actions ---------- */
+function flip(){ flipped = !flipped; render(); }
+function go(delta){
+  const total = active().length; if(!total) return;
+  pos = (pos + delta + total) % total;
+  flipped = false; render();
+}
+function mark(state){
+  const list = active(); if(!list.length) return;
+  const id = list[pos];
+  status[id] = (status[id]===state) ? undefined : state;
+  if(status[id]===undefined) delete status[id];
+  saveStatus();
+  // avancer si on vient de trancher
+  if(status[id]){ setTimeout(()=>go(1), 120); } else { render(); }
+}
+function shuffle(){
+  for(let i=baseOrder.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [baseOrder[i],baseOrder[j]] = [baseOrder[j],baseOrder[i]];
+  }
+  pos = 0; flipped = false; render();
+}
+function reset(){
+  for(const k in status) delete status[k];
+  try{ localStorage.removeItem(LS_KEY); }catch(e){}
+  reviewOnly = false; filter = "all"; pos = 0; flipped = false;
+  baseOrder = CARDS.map(c=>c.id);
+  render();
+}
+
+/* ---------- Écouteurs ---------- */
+card.addEventListener("click", flip);
+card.addEventListener("keydown", e=>{ if(e.key==="Enter"){e.preventDefault();flip();} });
+$("#flip").addEventListener("click", e=>{ e.stopPropagation(); flip(); });
+$("#prev").addEventListener("click", ()=>go(-1));
+$("#next").addEventListener("click", ()=>go(1));
+$("#markRev").addEventListener("click", ()=>mark("review"));
+$("#markKnow").addEventListener("click", ()=>mark("known"));
+$("#shuffle").addEventListener("click", shuffle);
+$("#reset").addEventListener("click", reset);
+
+document.addEventListener("keydown", e=>{
+  if(e.target.tagName==="INPUT") return;
+  switch(e.key){
+    case " ": e.preventDefault(); flip(); break;
+    case "ArrowRight": go(1); break;
+    case "ArrowLeft": go(-1); break;
+    case "j": case "J": mark("known"); break;
+    case "r": case "R": mark("review"); break;
+    case "s": case "S": shuffle(); break;
+  }
+});
+
+// swipe mobile
+let tx=0, ty=0;
+card.addEventListener("touchstart", e=>{ tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY; }, {passive:true});
+card.addEventListener("touchend", e=>{
+  const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){ go(dx<0?1:-1); }
+}, {passive:true});
+
+loadStatus();
+render();
+$("#foot").innerHTML = CARDS.length + " cartes · pièges d'examen & astuces inclus<br>Progression sauvegardée sur cet appareil.<br><a href=\"index.html\" style=\"color:var(--muted-2)\">À propos, code source & contributions</a>";
+</script>
+<script>
+if("serviceWorker" in navigator){ addEventListener("load", ()=>navigator.serviceWorker.register("sw.js")); }
+</script>
+</body>
+</html>

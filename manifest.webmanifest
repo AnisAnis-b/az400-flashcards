@@ -1,0 +1,17 @@
+{
+  "name": "AZ-400 · Cartes de révision",
+  "short_name": "AZ-400",
+  "description": "185 cartes pour réviser la certification Microsoft DevOps Engineer Expert (AZ-400) : pièges d'examen, 9 paquets, astuces réflexes. Gratuit, open source, hors ligne.",
+  "lang": "fr",
+  "start_url": "./revision.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e1016",
+  "theme_color": "#0e1016",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
