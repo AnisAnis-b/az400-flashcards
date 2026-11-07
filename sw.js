@@ -4,7 +4,7 @@
    - Le Cache Storage est partagé par toute l'origine (github.io de l'auteur) : on ne nettoie que
      les caches de cette app (préfixe "az400-"), jamais ceux des autres apps du même domaine. */
 const PREFIX = "az400-";
-const CACHE = PREFIX + "v1";
+const CACHE = PREFIX + "v2";
 const ASSETS = [
   "./",
   "./index.html",

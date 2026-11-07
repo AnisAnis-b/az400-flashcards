@@ -1,15 +1,15 @@
 # AZ-400 · Cartes de révision
 
-> 🇬🇧 *Free French-language flashcards app for the Microsoft AZ-400 (DevOps Engineer Expert) certification: 185 cards, 43 exam traps, GitHub vs Azure DevOps side by side, installable PWA, works offline.*
+> 🇬🇧 *Free French-language flashcards app for the Microsoft AZ-400 (DevOps Engineer Expert) certification: 182 cards, 42 exam traps, GitHub vs Azure DevOps side by side, installable PWA, works offline.*
 
-**185 flashcards en français pour préparer la certification [Microsoft AZ-400](https://learn.microsoft.com/fr-fr/credentials/certifications/devops-engineer/) (DevOps Engineer Expert)**, organisées selon les 5 domaines officiels de l'examen, dont 43 pièges issus pour la plupart d'erreurs réellement commises en préparation. Gratuit, open source, sans inscription, sans tracking.
+**182 flashcards en français pour préparer la certification [Microsoft AZ-400](https://learn.microsoft.com/fr-fr/credentials/certifications/devops-engineer/) (DevOps Engineer Expert)**, organisées selon les 5 domaines officiels de l'examen, dont 42 pièges issus pour la plupart d'erreurs réellement commises en préparation. Gratuit, open source, sans inscription, sans tracking.
 
 [![Réviser maintenant](https://img.shields.io/badge/%E2%96%B6%20R%C3%A9viser%20maintenant-a78bfa?style=for-the-badge&labelColor=0e1016)](https://anisanis-b.github.io/az400-flashcards/revision.html)
 [![Présentation](https://img.shields.io/badge/Pr%C3%A9sentation-191d2a?style=for-the-badge)](https://anisanis-b.github.io/az400-flashcards/)
 
-![185 cartes](https://img.shields.io/badge/cartes-185-a78bfa?labelColor=0e1016)
+![182 cartes](https://img.shields.io/badge/cartes-182-a78bfa?labelColor=0e1016)
 ![9 paquets](https://img.shields.io/badge/paquets-9-60a5fa?labelColor=0e1016)
-![43 pièges](https://img.shields.io/badge/pi%C3%A8ges%20d'examen-43-fb923c?labelColor=0e1016)
+![42 pièges](https://img.shields.io/badge/pi%C3%A8ges%20d'examen-42-fb923c?labelColor=0e1016)
 ![PWA hors ligne](https://img.shields.io/badge/PWA-hors%20ligne-4ade80?labelColor=0e1016)
 ![Licence MIT](https://img.shields.io/badge/licence-MIT-8b91a6?labelColor=0e1016)
 
@@ -23,7 +23,7 @@ Les cartes « Piège » viennent de la préparation elle-même : les erreurs que
 
 ## Fonctionnalités
 
-- 🃏 **Rappel actif** : une question au recto, la réponse au verso. Tu réponds avant de retourner.
+- 🃏 **Rappel actif** : un cas concret au recto, une réponse courte au verso (la réponse en gras, puis le pourquoi en une phrase). Tu réponds avant de retourner.
 - 🗂️ **Les 5 domaines officiels de l'examen + 4 paquets transversaux** : Processus & Communication, Code source, Pipelines, Sécurité & Conformité, Instrumentation, plus les Pièges d'examen, GitHub ↔ Azure DevOps, la Syntaxe et les Astuces réflexes.
 - ⚖️ **GitHub et Azure DevOps côte à côte** : l'examen exige les deux et adore les mélanger. Un paquet entier met leurs notions face à face.
 - ⭐ **« Je sais » / « À revoir »** : progression sauvegardée sur l'appareil (localStorage), avec un mode qui ne fait tourner que tes lacunes.
@@ -35,15 +35,15 @@ Les cartes « Piège » viennent de la préparation elle-même : les erreurs que
 
 | Paquet (intitulés officiels de l'examen) | Cartes | Poids à l'examen | Ce que ça couvre |
 |---|---:|---:|---|
-| 🧭 Concevoir et implémenter des processus et des communications | 13 | 10-15 % | Azure Boards, traçabilité, métriques de flux, liens `AB#`, service hooks, notifications |
-| 🌿 Concevoir et implémenter une stratégie de contrôle de code source | 17 | 10-15 % | Stratégies de branche, pull requests, branch policies, types de merge, hooks, forks, Scalar, tags |
-| 🚀 Concevoir et implémenter des pipelines de build et de mise en production | 57 | 50-55 % | Tests, agents et pools, YAML, templates, GitHub Actions, gates, blue-green, canary, anneaux, feature flags, Bicep, DSC |
-| 🔐 Développer un plan de sécurité et de conformité | 15 | 10-15 % | Service principals, managed identities, fédération OIDC, `GITHUB_TOKEN`, permissions, Key Vault, CodeQL, Dependabot |
-| 📈 Implémenter une stratégie d'instrumentation | 9 | 5-10 % | Azure Monitor, Application Insights, Log Analytics, KQL, alertes, dashboards et workbooks |
-| 🎯 **Pièges d'examen** | 43 | transversal | Les confusions et exceptions que les questions pièges adorent, groupées par thème |
-| ⚖️ GitHub ↔ Azure DevOps | 9 | transversal | La même notion sur les deux plateformes : ce qui se correspond, ce qui diffère |
-| ⌨️ Syntaxe et commandes | 11 | transversal | Le mot-clé YAML, la commande Git ou `az` à reconnaître dans un extrait |
-| ⚡ Astuces réflexes | 11 | transversal | Mot-clé de l'énoncé → réponse attendue |
+| 🧭 Concevoir et implémenter des processus et des communications | 10 | 10-15 % | Area et Iteration Paths, modèles de processus, GitHub Projects, burnup, liens `AB#`, wikis, Mermaid, intégration Teams |
+| 🌿 Concevoir et implémenter une stratégie de contrôle de code source | 11 | 10-15 % | Trunk-based, GitFlow, rebase, commits atomiques, branch policies, hooks, inner source et forks, `git reflog` |
+| 🚀 Concevoir et implémenter des pipelines de build et de mise en production | 52 | 50-55 % | Tests, agents et parallel jobs, YAML, templates, ressources, gates, blue-green, canary, anneaux, feature flags, ARM, Bicep, runbooks, santé des pipelines, Azure Artifacts, GitHub Packages, SemVer |
+| 🔐 Développer un plan de sécurité et de conformité | 32 | 10-15 % | Service principals, managed identities, GitHub Apps, connexions de service, SAST et DAST, STRIDE, CodeQL, Dependabot, licences, SBOM, Defender for Cloud, Azure Policy, verrous, GitHub Advanced Security |
+| 📈 Implémenter une stratégie d'instrumentation | 13 | 5-10 % | Azure Monitor, Log Analytics, Application Insights, seuils dynamiques, Smart Detection, workbooks, KQL, Container Insights, ITSMC, alertes actionnables |
+| 🎯 **Pièges d'examen** | 42 | transversal | Les confusions et exceptions que les questions pièges adorent, groupées par thème |
+| ⚖️ GitHub ↔ Azure DevOps | 6 | transversal | La même notion sur les deux plateformes : ce qui se correspond, ce qui diffère |
+| ⌨️ Syntaxe et commandes | 4 | transversal | La commande Git, le mot-clé YAML, KQL ou Bicep à reconnaître dans un extrait |
+| ⚡ Astuces réflexes | 12 | transversal | Mot-clé de l'énoncé → réponse attendue |
 
 > ℹ️ Les pièges sont numérotés et groupés par thème, avec le thème rappelé sur chaque carte (ex : « Piège 12 · Pipelines · … »).
 
@@ -51,10 +51,10 @@ Les cartes « Piège » viennent de la préparation elle-même : les erreurs que
 
 Ces cartes sont tirées de mes fiches de révision. Elles couvrent ce que j'ai réellement travaillé, pas l'intégralité du [guide d'étude officiel](https://learn.microsoft.com/fr-fr/credentials/certifications/resources/study-guides/az-400). Sujets au programme, **absents du paquet** :
 
-- La gestion des packages : Azure Artifacts, GitHub Packages, flux et vues, versionnement SemVer et CalVer
-- Microsoft Defender for Cloud DevOps Security et la configuration de GitHub Advanced Security
-- Les templates ARM en détail, Azure Deployment Environments, Azure Machine Configuration
-- Mermaid, git-fat, le suivi distribué, VM Insights et Container Insights
+- Azure Deployment Environments et Azure Machine Configuration en détail
+- git-fat et la migration d'un pipeline Classic vers YAML
+- La génération de documentation à partir de l'historique Git
+- Le suivi distribué
 
 Pour ces sujets, complète avec [Microsoft Learn](https://learn.microsoft.com/fr-fr/credentials/certifications/devops-engineer/). Les contributions qui comblent ces trous sont les bienvenues.
 
@@ -89,12 +89,12 @@ La progression (« je sais » / « à revoir ») est sauvegardée séparément s
 
 Une carte fausse ? Un piège qui t'a eu à l'examen blanc et qui manque ici ? **Les issues et pull requests sont bienvenues.**
 
-Ajouter une carte = ajouter une ligne dans le tableau `CARDS` de [`revision.html`](revision.html) :
+Ajouter une carte = ajouter une ligne dans le tableau `CARDS` de [`revision.html`](revision.html) : un cas concret au recto, la réponse en gras puis une phrase d'explication au verso.
 
 ```js
 {d:"pie",  // paquet : proc · src · pip · sec · ins · pie · eqv · cmd · tip
- q:"Piège 44 · Git · La question, côté recto ?",
- a:"La réponse, côté verso."},
+ q:"Piège 43 · Git · Le cas concret, côté recto ?",
+ a:"<b>La réponse.</b> Pourquoi, en une phrase."},
 ```
 
 Merci de sourcer les faits vérifiables (doc Microsoft Learn ou GitHub Docs) dans la description de la PR.
