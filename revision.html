@@ -331,7 +331,7 @@ const CARDS = [
   {d:"pip", q:"De gros binaires sont stockés dans Git. Où les mettre dans Azure Artifacts ?", a:"<b>Universal Packages.</b>"},
   {d:"pip", q:"Les développeurs veulent une seule configuration pour les packages privés et publics. Quel mécanisme ?", a:"<b>Une source en amont</b> (upstream) : le flux privé interroge le public et garde une copie en cache."},
   {d:"pip", q:"Rôle d'un flux : enregistrer des packages depuis l'amont, sans pouvoir publier. Lequel ?", a:"<b>Collaborator.</b> Reader : lire · Contributor : publier · Owner : administrer."},
-  {d:"pip", q:"Un pipeline publie dans un flux sans aucune configuration de droits. Pourquoi ça marche ?", a:"<b>Project Collection Build Service est Contributor</b> par défaut. Une identité de build au niveau projet doit, elle, être ajoutée."},
+  {d:"pip", q:"Un pipeline doit publier dans un flux Azure Artifacts tout juste créé. Faut-il configurer des droits ?", a:"<b>Oui : Feed Publisher (Contributor)</b> pour l'identité de build du pipeline. Par défaut, elle n'a que Feed and Upstream Reader (Collaborator), qui ne publie pas."},
   {d:"pip", q:"La production ne doit consommer que les packages validés du flux MyFeed. Quelle URL ?", a:"<b><code>MyFeed@Release</code>.</b> Sans vue, l'URL pointe sur @Local, qui contient tout."},
   {d:"pip", q:"Un package de l'amont manque dans @Release. Comment l'y amener ?", a:"<b>Le consommer via @Local</b> (mise en cache), <b>puis le promouvoir</b>. L'amont n'est consulté que via @Local."},
   {d:"pip", q:"Une version de package doit survivre à la politique de rétention du flux. Que faire ?", a:"<b>La promouvoir</b> dans une vue : les packages promus sont protégés."},
